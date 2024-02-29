@@ -1,5 +1,7 @@
-SwitchyOmega
+ZeroOmega, forked from SwitchyOmega compatible with manifest v3
 ============
+
+[ZeroOmega Chrome Web Store](https://chromewebstore.google.com/detail/pfnededegaaopdmhkdmcofjmoldfiped)
 
 Manage and switch between multiple proxies quickly & easily.
 
