@@ -1,10 +1,14 @@
 Promise = OmegaTarget.Promise
-xhr = Promise.promisify(require('xhr'))
+#xhr = Promise.promisify(require('xhr'))
 Url = require('url')
 ContentTypeRejectedError = OmegaTarget.ContentTypeRejectedError
 
 xhrWrapper = (args...) ->
-  xhr(args...).catch (err) ->
+  fetch(args...).then((response) ->
+    response.text().then((body) ->
+      return [response, body]
+    )
+  ).catch (err) ->
     throw err unless err.isOperational
     if not err.statusCode
       throw new OmegaTarget.NetworkError(err)

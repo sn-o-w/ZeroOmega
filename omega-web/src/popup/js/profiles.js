@@ -1,7 +1,4 @@
 (function() {
-  $script.ready('om-state', updateMenuByState);
-  $script.ready('om-page-info', updateMenuByPageInfo);
-  $script.ready(['om-state', 'om-page-info'], updateMenuByStateAndPageInfo);
 
   var profileTemplate = document.getElementById('js-profile-tpl')
     .cloneNode(true);
@@ -24,6 +21,10 @@
     'SwitchProfile': 2000,
     'RuleListProfile': 3000,
   };
+
+  $script.ready('om-state', updateMenuByState);
+  $script.ready('om-page-info', updateMenuByPageInfo);
+  $script.ready(['om-state', 'om-page-info'], updateMenuByStateAndPageInfo);
 
   return;
 

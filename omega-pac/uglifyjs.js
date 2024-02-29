@@ -1,5 +1,5 @@
 (function(exports, global) {
-    global["UglifyJS"] = exports;
+    globalThis["UglifyJS"] = exports;
     "use strict";
     function array_to_hash(a) {
         var ret = Object.create(null);

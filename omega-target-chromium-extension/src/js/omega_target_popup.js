@@ -24,25 +24,15 @@ var requestInfoCallback = null;
 
 OmegaTargetPopup = {
   getState: function (keys, cb) {
-    if (typeof localStorage === 'undefined' || !localStorage.length) {
-      callBackground('getState', [keys], cb);
-      return;
-    }
-    var results = {};
-    keys.forEach(function(key) {
-      try {
-        results[key] = JSON.parse(localStorage['omega.local.' + key]);
-      } catch (_) {
-        return null;
-      }
-    });
-    if (cb) cb(null, results);
+    callBackground('getState', [keys], cb);
+    return;
   },
   applyProfile: function (name, cb) {
     callBackgroundNoReply('applyProfile', [name], cb);
   },
   openOptions: function (hash, cb) {
-    var options_url = chrome.extension.getURL('options.html');
+    var options_url = chrome.runtime.getURL('options.html');
+    console.log('open options.....')
 
     chrome.tabs.query({
       url: options_url
@@ -66,8 +56,8 @@ OmegaTargetPopup = {
   },
   getActivePageInfo: function(cb) {
     chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
-      if (tabs.length === 0 || !tabs[0].url) return cb();
-      var args = {tabId: tabs[0].id, url: tabs[0].url};
+      if (tabs.length === 0 || !(tabs[0].pendingUrl || tabs[0].url)) return cb();
+      var args = {tabId: tabs[0].id, url: tabs[0].pendingUrl || tabs[0].url};
       callBackground('getPageInfo', [args], cb)
     });
   },

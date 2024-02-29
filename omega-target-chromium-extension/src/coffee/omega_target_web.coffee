@@ -50,19 +50,27 @@ angular.module('omegaTarget', []).factory 'omegaTarget', ($q) ->
   omegaTarget =
     options: null
     state: (name, value) ->
+      d = $q.defer()
       if arguments.length == 1
-        getValue = (key) -> try JSON.parse(localStorage[prefix + key])
         if Array.isArray(name)
-          return $q.when(name.map(getValue))
+          callBackground('getState', name).then((values) ->
+            d.resolve(name.map((key) -> values[key]))
+          )
         else
-          value = getValue(name)
+          callBackground('getState', [name]).then( (values) ->
+            d.resolve(values[name])
+          )
       else
-        localStorage[prefix + name] = JSON.stringify(value)
-      return $q.when(value)
+        newItem = {}
+        newItem[name] = value
+        callBackground('setState', newItem).then( ->
+          d.resolve(value)
+        )
+      return d.promise
     lastUrl: (url) ->
       name = 'web.last_url'
       if url
-        omegaTarget.state(name, url)
+        localStorage[prefix + name] = url
         url
       else
         try JSON.parse(localStorage[prefix + name])
@@ -91,7 +99,7 @@ angular.module('omegaTarget', []).factory 'omegaTarget', ($q) ->
     getMessage: chrome.i18n.getMessage.bind(chrome.i18n)
     openOptions: (hash) ->
       d = $q['defer']()
-      options_url = chrome.extension.getURL('options.html')
+      options_url = chrome.runtime.getURL('options.html')
       chrome.tabs.query url: options_url, (tabs) ->
         url = if hash
           urlParser.href = tabs[0]?.url || options_url
@@ -124,10 +132,10 @@ angular.module('omegaTarget', []).factory 'omegaTarget', ($q) ->
       clearBadge = true
       d = $q['defer']()
       chrome.tabs.query {active: true, lastFocusedWindow: true}, (tabs) ->
-        if not tabs[0]?.url
+        if tabs.length == 0 or not (tabs[0].pendingUrl || tabs[0].url)
           d.resolve(null)
           return
-        args = {tabId: tabs[0].id, url: tabs[0].url}
+        args = {tabId: tabs[0].id, url: tabs[0].pendingUrl || tabs[0].url}
         if tabs[0].id and requestInfoCallback
           connectBackground('tabRequestInfo', args,
             requestInfoCallback)
@@ -136,8 +144,12 @@ angular.module('omegaTarget', []).factory 'omegaTarget', ($q) ->
     refreshActivePage: ->
       d = $q['defer']()
       chrome.tabs.query {active: true, lastFocusedWindow: true}, (tabs) ->
-        if tabs[0].url and not isChromeUrl(tabs[0].url)
-          chrome.tabs.reload(tabs[0].id, {bypassCache: true})
+        url = tabs[0].pendingUrl || tabs[0].url
+        if url and not isChromeUrl(url)
+          if tabs[0].pendingUrl
+            chrome.tabs.update(tabs[0].id, {url})
+          else
+            chrome.tabs.reload(tabs[0].id, {bypassCache: true})
         d.resolve()
       return d.promise
     openManage: ->

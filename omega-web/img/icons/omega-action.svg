@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg
-   xmlns="http://www.w3.org/2000/svg"
-   width="32"
-   height="32"
-   version="1.1">
-  <path
-     d="M 16 16 m -16 0 a 16 16 0 1 0 32 0 a 16 16 0 1 0 -32 0 M 16 16 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
-     fill-rule="evenodd"
-     fill="#31afec"
-     stroke="none" />
-</svg>
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1708946463856" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10155" width="32" height="32" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M704 896h256L1024 768v256H640V809.7792c131.106133-56.490667 224-197.154133 224-361.7792 0-214.4256-157.5936-382.2592-352-382.2592S160 233.5744 160 448c0 164.625067 92.893867 305.3056 224 361.7792V1024H0V768l64 128h256v-32.597333C132.369067 796.945067 0 636.0064 0 448 0 200.567467 229.2224 0 512 0s512 200.567467 512 448c0 188.0064-132.369067 348.945067-320 415.402667v32.597333z" p-id="10156" fill="#31afec"></path></svg>

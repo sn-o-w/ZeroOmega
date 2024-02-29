@@ -3,5 +3,6 @@
 
 /tmp
 /build
+/build*
 /release.zip
 /web-ext-artifacts

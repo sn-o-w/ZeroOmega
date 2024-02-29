@@ -25,10 +25,10 @@ class ChromeTabs
       tabs.forEach (tab) =>
         @_dirtyTabs[tab.id] = tab.id
         @onUpdated tab.id, {}, tab if tab.active
-    if chrome.browserAction.setPopup?
-      chrome.browserAction.setTitle({title: action.title})
+    if chrome.action.setPopup?
+      chrome.action.setTitle({title: action.title})
     else
-      chrome.browserAction.setTitle({title: action.shortTitle})
+      chrome.action.setTitle({title: action.shortTitle})
     @setIcon(action.icon)
 
   onUpdated: (tabId, changeInfo, tab) ->
@@ -42,32 +42,35 @@ class ChromeTabs
   processTab: (tab, changeInfo) ->
     if @_badgeTab
       for own id of @_badgeTab
-        try chrome.browserAction.setBadgeText?(text: '', tabId: id)
+        try chrome.action.setBadgeText?(text: '', tabId: id)
         @_badgeTab = null
 
     if not tab.url? or tab.url.indexOf("chrome") == 0
       if @_defaultAction
-        chrome.browserAction.setTitle({
+        chrome.action.setTitle({
           title: @_defaultAction.title
           tabId: tab.id
         })
         @clearIcon tab.id
       return
-    @actionForUrl(tab.url).then (action) =>
+    @actionForUrl(tab.url).then((action) =>
       if not action
         @clearIcon tab.id
         return
       @setIcon(action.icon, tab.id)
-      if chrome.browserAction.setPopup?
-        chrome.browserAction.setTitle({title: action.title, tabId: tab.id})
+      if chrome.action.setPopup?
+        chrome.action.setTitle({title: action.title, tabId: tab.id})
       else
-        chrome.browserAction.setTitle({title: action.shortTitle, tabId: tab.id})
+        chrome.action.setTitle({title: action.shortTitle, tabId: tab.id})
+    ).catch((e) ->
+      console.log('error:', e)
+    )
 
   setTabBadge: (tab, badge) ->
     @_badgeTab ?= {}
     @_badgeTab[tab.id] = true
-    chrome.browserAction.setBadgeText?(text: badge.text, tabId: tab.id)
-    chrome.browserAction.setBadgeBackgroundColor?(
+    chrome.action.setBadgeText?(text: badge.text, tabId: tab.id)
+    chrome.action.setBadgeBackgroundColor?(
       color: badge.color
       tabId: tab.id
     )
@@ -87,11 +90,11 @@ class ChromeTabs
 
   _chromeSetIcon: (params) ->
     try
-      chrome.browserAction.setIcon?(params, @ignoreError)
+      chrome.action.setIcon?(params, @ignoreError)
     catch _
       # Some legacy Chrome versions will panic if there are other icon sizes.
       params.imageData = {19: params.imageData[19], 38: params.imageData[38]}
-      chrome.browserAction.setIcon?(params, @ignoreError)
+      chrome.action.setIcon?(params, @ignoreError)
 
   clearIcon: (tabId) ->
     return unless @_defaultAction?.icon?

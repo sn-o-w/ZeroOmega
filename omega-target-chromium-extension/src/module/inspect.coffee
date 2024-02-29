@@ -15,6 +15,7 @@ module.exports = class Inspect
     return unless chrome.i18n.getUILanguage?
 
     return if @_enabled
+    return
 
     webResource = [
       "http://*/*"
