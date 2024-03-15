@@ -1,7 +1,9 @@
 ZeroOmega, forked from SwitchyOmega compatible with manifest v3
 ============
 
-[ZeroOmega Chrome Web Store](https://chromewebstore.google.com/detail/pfnededegaaopdmhkdmcofjmoldfiped)
+[Chrome Web Store](https://chromewebstore.google.com/detail/pfnededegaaopdmhkdmcofjmoldfiped)
+
+[Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/zeroomegaproxy-switchy-/dmaldhchmoafliphkijbfhaomcgglmgd)
 
 Manage and switch between multiple proxies quickly & easily.
 
