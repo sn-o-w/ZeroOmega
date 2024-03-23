@@ -184,6 +184,7 @@ proxyImpl = OmegaTargetCurrent.proxy.getProxyImpl(Log)
 state.set({proxyImplFeatures: proxyImpl.features})
 options = new OmegaTargetCurrent.Options(null, storage, state, Log, sync,
   proxyImpl)
+
 options.externalApi = new OmegaTargetCurrent.ExternalApi(options)
 options.externalApi.listen()
 

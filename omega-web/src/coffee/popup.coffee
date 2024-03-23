@@ -178,7 +178,7 @@ module.controller 'PopupCtrl', ($scope, $window, $q, omegaTarget,
 
   $scope.saveExternal = ->
     $scope.nameExternal.open = false
-    name = $scope.externalProfile.name
+    name = $scope.externalProfile?.name
     if name
       omegaTarget.addProfile($scope.externalProfile).then ->
         omegaTarget.applyProfile(name).then ->

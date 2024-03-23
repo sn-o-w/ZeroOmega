@@ -10,7 +10,7 @@ class BrowserStorage extends Storage
   get: (keys) ->
     promiseResult = idbKeyval.get('localStorage').then((initValuesMap) =>
       if !_globalLocalStorageCache
-        @proto.initValuesMap(initValuesMap)
+        @proto.initValuesMap?(initValuesMap)
         _globalLocalStorageCache = true
       map = {}
       if typeof keys == 'string'
@@ -33,13 +33,14 @@ class BrowserStorage extends Storage
   set: (items) ->
     promiseResult = idbKeyval.get('localStorage').then((initValuesMap) =>
       if !_globalLocalStorageCache
-        @proto.initValuesMap(initValuesMap)
+        @proto.initValuesMap?(initValuesMap)
         _globalLocalStorageCache = true
       for own key, value of items
         value = JSON.stringify(value)
         @proto.setItem.call(@storage, @prefix + key, value)
       return items
     ).then((items) =>
+      return items unless @proto.getValuesMap
       initValuesMap = @proto.getValuesMap()
       idbKeyval.set('localStorage', initValuesMap).then( ->
         return items
@@ -50,7 +51,7 @@ class BrowserStorage extends Storage
   remove: (keys) ->
     promiseResult = idbKeyval.get('localStorage').then((initValuesMap) =>
       if !_globalLocalStorageCache
-        @proto.initValuesMap(initValuesMap)
+        @proto.initValuesMap?(initValuesMap)
         _globalLocalStorageCache = true
       if not keys?
         if not @prefix
@@ -70,6 +71,7 @@ class BrowserStorage extends Storage
         @proto.removeItem.call(@storage, @prefix + key)
 
     ).then( =>
+      return unless @proto.getValuesMap
       initValuesMap = @proto.getValuesMap()
       idbKeyval.set('localStorage', initValuesMap).then( ->
         return

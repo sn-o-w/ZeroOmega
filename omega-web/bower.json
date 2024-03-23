@@ -21,7 +21,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.7.2",
+    "angular": "~1.8.2",
     "angular-animate": "~1.7.2",
     "angular-loader": "~1.7.2",
     "angular-i18n": "~1.7.2",
@@ -127,6 +127,6 @@
     }
   },
   "resolutions": {
-    "angular": "~1.7.2"
+    "angular": "~1.8.2"
   }
 }

@@ -12,6 +12,50 @@ class ChromeOptions extends OmegaTarget.Options
 
   fetchUrl: fetchUrl
 
+  constructor: (args...) ->
+    super(args...)
+    chrome.contextMenus.onClicked.addListener((info, tab) =>
+      @ready.then( =>
+        switch info.menuItemId
+          when 'enableQuickSwitch'
+            changes = {}
+            changes['-enableQuickSwitch'] = info.checked
+            setOptions = @_setOptions(changes)
+            if info.checked and not @_quickSwitchCanEnable
+              setOptions.then ->
+                chrome.tabs.create(
+                  url: chrome.runtime.getURL('options.html#/ui')
+                )
+      )
+    )
+
+    chrome.action.onClicked.addListener (tab) =>
+      if browser?.proxy?.onRequest?
+        browser.permissions.request({origins: ["<all_urls>"]})
+      @ready.then( =>
+        @clearBadge()
+        if not @_options['-enableQuickSwitch']
+          # If we reach here, then the browser does not support popup.
+          # Let's open the popup page in a tab.
+          chrome.tabs.create(url: 'popup/index.html')
+          return
+        profiles = @_options['-quickSwitchProfiles']
+        index = profiles.indexOf(@_currentProfileName)
+        index = (index + 1) % profiles.length
+        @applyProfile(profiles[index]).then =>
+          if @_options['-refreshOnProfileChange']
+            url = tab.pendingUrl or tab.url
+            return if not url
+            return if url.substr(0, 6) == 'chrome'
+            return if url.substr(0, 6) == 'about:'
+            return if url.substr(0, 4) == 'moz-'
+            if tab.pendingUrl
+              chrome.tabs.update(tab.id, {url: url})
+            else
+              chrome.tabs.reload(tab.id)
+      )
+
+
   updateProfile: (args...) ->
     super(args...).then (results) ->
       error = false
@@ -68,48 +112,11 @@ class ChromeOptions extends OmegaTarget.Options
       chrome.action.setBadgeText?(text: '')
     return
 
-  _quickSwitchInit: false
-  _quickSwitchHandlerReady: false
   _quickSwitchCanEnable: false
   setQuickSwitch: (quickSwitch, canEnable) ->
     @_quickSwitchCanEnable = canEnable
-    if not @_quickSwitchHandlerReady
-      @_quickSwitchHandlerReady = true
-      window.OmegaContextMenuQuickSwitchHandler = (info) =>
-        changes = {}
-        changes['-enableQuickSwitch'] = info.checked
-        setOptions = @_setOptions(changes)
-        if info.checked and not @_quickSwitchCanEnable
-          setOptions.then ->
-            chrome.tabs.create(
-              url: chrome.runtime.getURL('options.html#/ui')
-            )
-
-    if quickSwitch or not chrome.action.setPopup?
-      chrome.action.setPopup?({popup: ''})
-      if not @_quickSwitchInit
-        @_quickSwitchInit = true
-        chrome.action.onClicked.addListener (tab) =>
-          @clearBadge()
-          if not @_options['-enableQuickSwitch']
-            # If we reach here, then the browser does not support popup.
-            # Let's open the popup page in a tab.
-            chrome.tabs.create(url: 'popup/index.html')
-            return
-          profiles = @_options['-quickSwitchProfiles']
-          index = profiles.indexOf(@_currentProfileName)
-          index = (index + 1) % profiles.length
-          @applyProfile(profiles[index]).then =>
-            if @_options['-refreshOnProfileChange']
-              url = tab.pendingUrl or tab.url
-              return if not url
-              return if url.substr(0, 6) == 'chrome'
-              return if url.substr(0, 6) == 'about:'
-              return if url.substr(0, 4) == 'moz-'
-              if tab.pendingUrl
-                chrome.tabs.update(tab.id, {url: url})
-              else
-                chrome.tabs.reload(tab.id)
+    if quickSwitch
+      chrome.action.setPopup({popup: ''})
     else
       chrome.action.setPopup({popup: 'popup/index.html'})
 

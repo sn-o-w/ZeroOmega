@@ -42,21 +42,23 @@ class LocalStorage {
 }
 const instance = new LocalStorage()
 
-globalThis.localStorage = new Proxy(instance, {
-  set: function (obj, prop, value) {
-    if (LocalStorage.prototype.hasOwnProperty(prop)) {
-      instance[prop] = value
-    } else {
-      instance.setItem(prop, value)
+if (!globalThis.localStorage) {
+  globalThis.localStorage = new Proxy(instance, {
+    set: function (obj, prop, value) {
+      if (LocalStorage.prototype.hasOwnProperty(prop)) {
+        instance[prop] = value
+      } else {
+        instance.setItem(prop, value)
+      }
+      return true
+    },
+    get: function (target, name) {
+      if (LocalStorage.prototype.hasOwnProperty(name)) {
+        return instance[name]
+      }
+      if (valuesMap.has(name)) {
+        return instance.getItem(name)
+      }
     }
-    return true
-  },
-  get: function (target, name) {
-    if (LocalStorage.prototype.hasOwnProperty(name)) {
-      return instance[name]
-    }
-    if (valuesMap.has(name)) {
-      return instance.getItem(name)
-    }
-  }
-})
+  })
+}
