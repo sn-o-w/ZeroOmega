@@ -5,7 +5,7 @@ ZeroOmega, forked from SwitchyOmega compatible with manifest v3
 
 [Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/zeroomegaproxy-switchy-/dmaldhchmoafliphkijbfhaomcgglmgd)
 
-[ZeroOmega--Proxy Switchy](https://addons.mozilla.org/en-US/firefox/addon/zeroomega/)
+[Firefox Addon](https://addons.mozilla.org/en-US/firefox/addon/zeroomega/)
 
 Manage and switch between multiple proxies quickly & easily.
 
