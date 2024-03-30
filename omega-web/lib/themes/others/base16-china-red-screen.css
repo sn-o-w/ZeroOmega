@@ -1,0 +1,23 @@
+
+:root {
+    --base00: #550000;
+    --base01: #6e0a0a;
+    /* --base01: #aa0000; */
+    /*--base02: #be1e2d; */
+    --base02: #aa0000;
+    /*--base03: #ff2a2a; */
+    --base03: #d26c31;
+    /**--base04: #f3cfa9; */
+    --base04: #d26c31;
+    --base05: #f3cfa9;
+    --base06: #f7f7e2;
+    --base07: #fcfcfc;
+    --base08: #f3cfa9;
+    --base09: #c86148;
+    --base0A: #f3cfa9;
+    --base0B: #d26c31;
+    --base0C: #efd393;
+    --base0D: #efd393;
+    --base0E: #d26c31;
+    --base0F: #efd393;
+}

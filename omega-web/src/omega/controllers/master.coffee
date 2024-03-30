@@ -1,7 +1,7 @@
 angular.module('omega').controller 'MasterCtrl', ($scope, $rootScope, $window,
   $q, $modal, $state, profileColors, profileIcons, omegaTarget,
   $timeout, $location, $filter, getAttachedName, isProfileNameReserved,
-  isProfileNameHidden, dispNameFilter, downloadFile) ->
+  isProfileNameHidden, dispNameFilter, downloadFile, themes) ->
 
   if browser?.proxy?.register? or browser?.proxy?.registerProxyScript?
     $scope.isExperimental = true
@@ -10,6 +10,9 @@ angular.module('omega').controller 'MasterCtrl', ($scope, $rootScope, $window,
   tr = $filter('tr')
 
   $rootScope.options = null
+
+  omegaTarget.state('customCss').then (customCss = '') ->
+    $scope.customCss = customCss
 
   omegaTarget.addOptionsChangeCallback (newOptions) ->
     $rootScope.options = angular.copy(newOptions)
@@ -87,6 +90,9 @@ angular.module('omega').controller 'MasterCtrl', ($scope, $rootScope, $window,
     plainOptions = angular.fromJson(angular.toJson($rootScope.options))
     patch = diff.diff($rootScope.optionsOld, plainOptions)
     omegaTarget.optionsPatch(patch).then ->
+
+      omegaTarget.state('customCss').then (customCss = '') ->
+        $scope.customCss = customCss
       $rootScope.showAlert(
         type: 'success'
         i18n: 'options_saveSuccess'
@@ -319,6 +325,49 @@ angular.module('omega').controller 'MasterCtrl', ($scope, $rootScope, $window,
   $scope.downloadIntervalI18n = (interval) ->
     "options_downloadInterval_" + (if interval < 0 then "never" else interval)
 
+  themeItems = []
+  for key, val of themes
+    val.key = 'others/base16-' + key
+    val.displayName = '(' +
+    (if val.dark then '🌚' else '🌞') + ')    ' + key
+    themeItems.push(val)
+  $scope.themeItems = themeItems
+  $scope.selectedItem = {data: null}
+
+  changeTheme = (themeKey) ->
+    unless themeKey
+      $scope.customCss = ''
+      $scope.options['-customCss'] = $scope.customCss
+      return
+    getText = (url) ->
+      #url = chrome.runtime.getURL(url)
+      fetch(url).then((res) -> res.text())
+
+    variableCss = ''
+    baseCss = ''
+    themeCss = ''
+    getVariableCss = getText('lib/themes/variable.css').then((result) ->
+      variableCss = result
+      getText('lib/themes/' + themeKey + '.css')
+    ).then((result) ->
+      themeCss = result
+      getText('lib/themes/base.css')
+    ).then((result) ->
+      baseCss = result
+    ).then( ->
+      $scope.customCss =  [variableCss, themeCss, baseCss].join('\n')
+      $scope.options['-customCss'] = $scope.customCss
+      $scope.$applyAsync()
+    ).catch(->
+      $scope.customCss = ''
+      $scope.options['-customCss'] = $scope.customCss
+      $scope.$applyAsync()
+    )
+
+  $scope.selectTheme = ->
+    themeItem = $scope.selectedItem or {data: {}}
+    changeTheme(themeItem.data.key)
+  $scope.changeTheme = changeTheme
   $scope.openShortcutConfig = omegaTarget.openShortcutConfig.bind(omegaTarget)
 
   showFirstRunOnce = true

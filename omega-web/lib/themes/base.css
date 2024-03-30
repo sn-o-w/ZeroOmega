@@ -1,0 +1,419 @@
+body {
+  color: var(--defaultForeground);
+  font-size: 14px;
+  background: var(--defaultBackground);
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--defaultBackground);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: var(--lighterBackground);
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: var(--defaultBackground);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--selectionBackground);
+}
+
+a,
+.om-nav-item > a {
+  color: var(--primaryColor);
+}
+
+a:focus,
+a:hover {
+  color: var(--defaultForeground);
+}
+
+.nav-header {
+  color: var(--highlightBackground);
+}
+
+.nav > li > a:focus,
+.nav > li > a:hover {
+  background-color: var(--lighterBackground);
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+  color: var(--whiteColor);
+  background-color: var(--infoColor);
+}
+
+.btn-default {
+  color: var(--defaultForeground);
+  background-color: var(--defaultBackground);
+  border-color: var(--selectionBackground);
+}
+
+.btn-default:hover {
+  color: var(--defaultForeground);
+  background-color: var(--lighterBackground);
+  border-color: var(--selectionBackground);
+}
+.btn-success {
+  color: var(--whiteColor);
+  background-color: var(--positiveColor);
+  border-color: var(--positiveColor);
+}
+.btn-primary,
+.btn-primary:hover {
+  color: var(--whiteColor);
+  background-color: var(--primaryColor);
+  border-color: var(--primaryColor);
+}
+.btn-warning {
+  color: var(--whiteColor);
+  background-color: var(--warningColor);
+  border-color: var(--warningColor);
+}
+.btn-warning:hover {
+  color: var(--whiteColor);
+  background-color: var(--warningColor);
+  border-color: var(--warningColor);
+}
+.btn-info,
+.btn-info:hover {
+  color: var(--whiteColor);
+  background-color: var(--infoColor);
+  border-color: var(--infoColor);
+}
+.btn-danger,
+.btn-danger:hover {
+  color: var(--whiteColor);
+  background-color: var(--negativeColor);
+  border-color: var(--negativeColor);
+}
+.btn:hover {
+  outline: 2px solid var(--defaultForeground);
+  outline-offset: 2px;
+}
+
+.btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
+  color: var(--defaultForeground);
+  background-color: var(--lighterBackground);
+  border-color: var(--lighterBackground);
+}
+
+.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover {
+  color: var(--defaultForeground);
+  background-color: var(--selectionBackground);
+  border-color: var(--selectionBackground);
+  outline: 2px solid var(--defaultForeground);
+  outline-offset: 2px;
+}
+
+.btn-link {
+  color: var(--primaryColor);
+}
+.btn-link:focus,
+.btn-link:hover {
+  color: var(--defaultForeground);
+  outline: initial;
+}
+.text-info {
+  color: var(--infoColor);
+}
+.text-warning {
+  color: var(--warningColor);
+}
+.text-danger {
+  color: var(--negativeColor);
+}
+.help-block,
+.help-inline {
+  color: var(--highlightBackground);
+}
+
+.form-control {
+  color: var(--defaultForeground);
+  background-color: var(--defaultBackground);
+  border-color: var(--selectionBackground);
+}
+.form-control:focus {
+  border-color: var(--infoColor);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--infoColor);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px var(--infoColor);
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: var(--lighterBackground);
+  opacity: 0.5;
+}
+
+.form-control.ng-invalid {
+  border-color: var(--negativeColor);
+}
+
+.alert-info {
+  color: var(--infoColor);
+  background-color: transparent;
+  border-color: var(--lighterBackground);
+  position: relative;
+}
+.alert-success {
+  color: var(--primaryColor);
+  background-color: transparent;
+  border-color: var(--lighterBackground);
+  position: relative;
+}
+
+.alert-info:before,
+.alert-success:before,
+.alert-danger:before {
+  content: " ";
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-color: var(--primaryColor);
+}
+
+.alert-danger {
+  color: var(--negativeColor);
+  background-color: transparent;
+  border-color: var(--lighterBackground);
+  position: relative;
+}
+.alert-danger:before {
+  background-color: var(--negativeColor);
+}
+.alert-info:before {
+  background-color: var(--infoColor);
+}
+
+table {
+  background-color: transparent;
+}
+
+caption {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: #777;
+  text-align: left;
+}
+
+th {
+  text-align: left;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  border-top-color: var(--lighterBackground);
+}
+
+.table > thead > tr > th {
+  border-bottom-color: var(--lighterBackground);
+}
+
+.table > tbody + tbody {
+  border-top-color: var(--lighterBackground);
+}
+
+.table .table {
+  background-color: var(--defaultBackground);
+}
+
+.table-bordered {
+  border-color: var(--lighterBackground);
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border-color: var(--lighterBackground);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: var(--lighterBackground);
+}
+
+.table-hover > tbody > tr:hover {
+  background-color: var(--selectionBackground);
+}
+
+.table > tbody > tr.active > td,
+.table > tbody > tr.active > th,
+.table > tbody > tr > td.active,
+.table > tbody > tr > th.active,
+.table > tfoot > tr.active > td,
+.table > tfoot > tr.active > th,
+.table > tfoot > tr > td.active,
+.table > tfoot > tr > th.active,
+.table > thead > tr.active > td,
+.table > thead > tr.active > th,
+.table > thead > tr > td.active,
+.table > thead > tr > th.active {
+  background-color: var(--positiveColor);
+}
+
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr.active:hover > th,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover {
+  background-color: var(--positiveColor);
+}
+
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+  border-color: var(--lighterBackground);
+}
+.table > tbody + tbody {
+  border-top-color: var(--lighterBackground);
+}
+
+.close {
+  color: var(--defaultForeground);
+}
+
+.modal-content {
+  background-color: var(--defaultBackground);
+}
+.modal-header {
+  border-bottom-color: var(--lighterBackground);
+}
+
+.modal-footer {
+  border-top-color: var(--lighterBackground);
+}
+
+.dropdown-menu {
+  background-color: var(--lighterBackground);
+}
+.dropdown-menu > li > a {
+  color: var(--defaultForeground);
+}
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover {
+  color: var(--defaultForeground);
+  background-color: var(--selectionBackground);
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:focus,
+.dropdown-menu > .active > a:hover {
+  color: var(--whiteColor);
+  background-color: var(--infoColor);
+}
+
+legend {
+  color: var(--defaultForeground);
+  border-bottom-color: var(--selectionBackground);
+}
+
+.well {
+  background-color: var(--lighterBackground);
+  border-color: var(--selectionBackground);
+}
+
+/**
+* options.css
+*/
+.divider {
+  background-color: var(--lighterBackground);
+}
+main .page-header {
+  background-color: var(--defaultBackground);
+  background-image: none;
+  border-bottom-color: var(--lighterBackground);
+}
+
+.profile-inline {
+  color: var(--defaultForeground);
+  background: var(--selectionBackground);
+}
+
+.switch-attached > tr > td {
+  background-color: var(--selectionBackground);
+}
+
+.side-nav .nav-pills > li > a.btn-success:hover {
+  color: var(--whiteColor);
+  background-color: var(--positiveColor);
+  border-color: var(--positiveColor);
+}
+
+.cycle-profile-container li{
+  background-color: var(--lighterBackground);
+}
+
+.cycle-profile-container.cycle-enabled li{
+  background-color: var(--selectionBackground);
+}
+
+/**
+* popup.css
+**/
+
+#js-system{
+  color: var(--defaultForeground);
+}
+
+.om-nav-item > a:hover {
+  color: var(--defaultForeground);
+}
+.om-nav-item > a:hover {
+  background-color: var(--lighterBackground);
+}
+.om-nav-item.om-active > a {
+  color: var(--whiteColor);
+  background-color: var(--infoColor);
+}
+.om-divider {
+  background-color: var(--lighterBackground);
+}
+
+/**
+* spectrum.css
+**/
+
+.sp-container {
+  background-color: var(--lighterBackground);
+  border-color: var(--selectionBackground);
+}
+
+.sp-input {
+  color: var(--defaultForeground);
+}
+
+.sp-input:focus {
+  border-color: var(--primaryColor);
+}
+.sp-input.sp-validation-error {
+  border-color: var(--negativeColor);
+  background: var(--defaultBackground);
+}
+
+.sp-palette-container {
+  border-right-color: var(--selectionBackground);
+}

@@ -23,6 +23,10 @@ body {
   display: none !important;
 }
 
+#js-system{
+  color: #000;
+}
+
 /* Menu */
 
 .om-nav {

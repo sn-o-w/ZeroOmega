@@ -368,6 +368,10 @@ class Options
       if refresh?
         @_state.set({'refreshOnProfileChange': refresh})
 
+      customCss = changes['-customCss']
+      if customCss?
+        @_state.set({'customCss': csso.minify(customCss).css})
+
       if Object::hasOwnProperty.call changes, '-showExternalProfile'
         showExternal = changes['-showExternalProfile']
         if not showExternal?
@@ -789,7 +793,7 @@ class Options
       @_tempProfile.color = currentProfile.color
       @_tempProfile.defaultProfileName = currentProfile.name
     
-    changed = false
+    changed = 0
     rule = @_tempProfileRules[domain]
     if rule and rule.profileName
       if rule.profileName != profileName
@@ -798,7 +802,11 @@ class Options
         list.splice(list.indexOf(rule), 1)
 
         rule.profileName = profileName
-        changed = true
+        changed = 1
+      else
+        @_tempProfile.rules.splice(@_tempProfile.rules.indexOf(rule), 1)
+        delete @_tempProfileRules[domain]
+        changed = -1
     else
       rule =
         condition:
@@ -808,13 +816,16 @@ class Options
         isTempRule: true
       @_tempProfile.rules.push(rule)
       @_tempProfileRules[domain] = rule
-      changed = true
+      changed = 1
 
     key = OmegaPac.Profiles.nameAsKey(profileName)
     rulesByProfile = @_tempProfileRulesByProfile[key]
     if not rulesByProfile?
       rulesByProfile = @_tempProfileRulesByProfile[key] = []
-    rulesByProfile.push(rule)
+    if changed == 1
+      rulesByProfile.push(rule)
+    else
+      rulesByProfile.splice(rulesByProfile.indexOf(rule), 1)
 
     if changed
       OmegaPac.Profiles.updateRevision(@_tempProfile)

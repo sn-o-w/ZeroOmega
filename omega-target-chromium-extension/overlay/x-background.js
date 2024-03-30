@@ -1,6 +1,7 @@
 import "./js/background_preload.js"
 import "./idb-keyval.js"
 import "./localstorage-polyfill.js"
+import "./csso.js"
 import "./js/log_error.js"
 //import "./lib/FileSaver/FileSaver.min.js"
 import "./js/omega_debug.js"

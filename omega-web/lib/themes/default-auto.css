@@ -1,0 +1,38 @@
+:root {
+  --base00: #F8F4ED;
+  --base01: #E7E3DB;
+  --base02: #C7D2D4;
+  --base03: #A4ACA7;
+  --base04: #3a403b;
+  --base05: #2B312C;
+  --base06: #141714;
+  --base07: #090a09;
+  --base08: #EE3F4D;
+  --base09: #12AA9C;
+  --base0A: #619AC3;
+  --base0B: #41AE3C;
+  --base0C: #983680;
+  --base0D: #B78D12;
+  --base0E: #FC7930;
+  --base0F: #CC5595;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --base00: #2B312C;
+    --base01: #1A2413;
+    --base02: #474B4C;
+    --base03: #617172;
+    --base04: #efebe5;
+    --base05: #E4DFD7;
+    --base06: #f3f1ed;
+    --base07: #f9f7f5;
+    --base08: #EE3F4D;
+    --base09: #619AC3;
+    --base0A: #EEA6B7;
+    --base0B: #96C2E4;
+    --base0C: #C8ADC4;
+    --base0D: #D276A3;
+    --base0E: #FC7930;
+    --base0F: #57C3C2;
+  }
+}

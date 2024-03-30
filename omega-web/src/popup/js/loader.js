@@ -2,6 +2,7 @@ window.OmegaPopup = {};
 $script(['js/index.js', 'js/profiles.js', 'js/keyboard.js'], 'om-main');
 $script(['js/i18n.js']);
 $script('../js/omega_target_popup.js', 'om-target', function() {
+  $script('js/style.js', 'om-style')
   function init(){
     OmegaTargetPopup.getActivePageInfo(function(err, info) {
       window.OmegaPopup.pageInfo = info;
@@ -16,6 +17,7 @@ $script('../js/omega_target_popup.js', 'om-target', function() {
       'proxyNotControllable',
       'externalProfile',
       'showExternalProfile',
+      'customCss',
     ], function(err, state) {
       window.OmegaPopup.state = state;
       $script.done('om-state');

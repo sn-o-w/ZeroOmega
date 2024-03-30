@@ -83,6 +83,9 @@ jQuery(document).on 'keydown', (e) ->
 module.controller 'PopupCtrl', ($scope, $window, $q, omegaTarget,
   profileIcons, profileOrder, dispNameFilter, getVirtualTarget) ->
 
+  omegaTarget.state('customCss').then (customCss = '') ->
+    $scope.customCss = customCss
+
   $scope.closePopup = ->
     $window.close()
 

@@ -58,6 +58,9 @@ $httpProvider, $animateProvider, $compileProvider) ->
       url: '/io'
       templateUrl: 'partials/io.html'
       controller: 'IoCtrl'
+    ).state('theme',
+      url: '/theme'
+      templateUrl: 'partials/theme.html'
     ).state('profile',
       url: '/profile/*name'
       templateUrl: 'partials/profile.html'

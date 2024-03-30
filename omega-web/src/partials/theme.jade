@@ -1,0 +1,27 @@
+.page-header
+  h2 {{'Theme'}}
+section.settings-group
+  h3 {{'Theme'}}
+  p
+    button.btn.btn-default(type='button' role='button' ng-click='changeTheme("default-dark")')
+      span.glyphicon.glyphicon-heart
+      = ' '
+      | {{'Dark'}}
+    button.btn.btn-default(type='button' role='button' ng-click='changeTheme("default-light")')
+      span.glyphicon.glyphicon-heart-empty
+      = ' '
+      | {{'Light'}}
+    button.btn.btn-default(type='button' role='button' ng-click='changeTheme("default-auto")')
+      span.glyphicon.glyphicon-adjust
+      = ' '
+      | {{'Auto'}}
+    button.btn.btn-default(type='button' role='button' ng-click='changeTheme("")')
+      span.glyphicon.glyphicon-remove
+      = ' '
+      | {{'Clear'}}
+    select.form-control.inline-form-control(ng-model='selectedItem.data'
+      ng-options='item as item.displayName for item in themeItems track by item.key' ng-change="selectTheme()")
+  p.help-block
+    a(href='https://en.wikipedia.org/wiki/CSS' target='_blank')
+      | {{'Cascading Style Sheets (CSS) Wiki'}}
+  textarea.monospace.form-control.width-limit(rows='30' spellcheck='false' ng-model='options["-customCss"]')

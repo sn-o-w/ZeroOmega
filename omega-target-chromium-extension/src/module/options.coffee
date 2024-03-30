@@ -7,6 +7,14 @@ ChromePort = require('./chrome_port')
 fetchUrl = require('./fetch_url')
 Url = require('url')
 
+TEMPPROFILEKEY = 'tempProfileState'
+
+chrome.runtime.onStartup.addListener ->
+  console.log('delete temp profile')
+  idbKeyval.del(TEMPPROFILEKEY).then(->
+    console.log('delete temp profile success')
+  )
+
 class ChromeOptions extends OmegaTarget.Options
   _inspect: null
 
@@ -55,7 +63,40 @@ class ChromeOptions extends OmegaTarget.Options
               chrome.tabs.reload(tab.id)
       )
 
+  init: ->
+    super()
+    @ready.then =>
+      console.log('get temp profile')
+      idbKeyval.get(TEMPPROFILEKEY).then (tempProfileState) =>
+        console.log('init temp profile:', tempProfileState)
+        # tempProfileState =
+        # { _tempProfile,
+        # _tempProfileActive}
+        if tempProfileState
+          @_tempProfile = tempProfileState._tempProfile
+          @_tempProfile.rules.forEach((_rule) =>
+            key = OmegaPac.Profiles.nameAsKey(_rule.profileName)
+            @_tempProfileRulesByProfile[key] =
+              @_tempProfileRulesByProfile[key] or []
+            @_tempProfileRulesByProfile[key].push(_rule)
+            condition = _rule.condition
+            domain = condition.pattern.substring(2)
+            @_tempProfileRules[domain] = _rule
+          )
+          #@_tempProfileRules = tempProfileState._tempProfileRules
+          #@_tempProfileRulesByProfile =
+          #  tempProfileState._tempProfileRulesByProfile
+          @_tempProfileActive = tempProfileState._tempProfileActive
+          OmegaPac.Profiles.updateRevision(@_tempProfile)
+          @applyProfile(@_currentProfileName)
+    @ready
 
+  addTempRule: (domain, profileName) ->
+    super(domain, profileName).then =>
+      idbKeyval.set(TEMPPROFILEKEY, {
+        _tempProfile: @_tempProfile
+        _tempProfileActive: @_tempProfileActive
+      })
   updateProfile: (args...) ->
     super(args...).then (results) ->
       error = false
