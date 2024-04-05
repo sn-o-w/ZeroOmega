@@ -160,7 +160,7 @@ class Options
   ###
   init: ->
     @ready = @loadOptions().then(=>
-      if @_options['-startupProfileName']
+      if globalThis.isBrowserRestart and @_options['-startupProfileName']
         @applyProfile(@_options['-startupProfileName'])
       else
         @_state.get({
@@ -384,8 +384,7 @@ class Options
       if changes['-enableQuickSwitch']? or quickSwitchProfiles?
         @reloadQuickSwitch()
       if changes['-downloadInterval']?
-        @schedule 'updateProfile', @_options['-downloadInterval'], =>
-          @updateProfile()
+        @schedule 'updateProfile', @_options['-downloadInterval']
       if changes['-showInspectMenu']? or changes == @_options
         showMenu = @_options['-showInspectMenu']
         if not showMenu?

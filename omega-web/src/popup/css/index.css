@@ -17,6 +17,7 @@ html, body {
 
 body {
   min-width: 12em;
+  margin: 5px;
 }
 
 .om-hidden {
