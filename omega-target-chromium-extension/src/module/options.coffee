@@ -9,7 +9,10 @@ Url = require('url')
 
 TEMPPROFILEKEY = 'tempProfileState'
 
+globalThis.isBrowserRestart = false
+
 chrome.runtime.onStartup.addListener ->
+  globalThis.isBrowserRestart = true
   console.log('delete temp profile')
   idbKeyval.del(TEMPPROFILEKEY).then(->
     console.log('delete temp profile success')
@@ -22,6 +25,13 @@ class ChromeOptions extends OmegaTarget.Options
 
   constructor: (args...) ->
     super(args...)
+    chrome.alarms.onAlarm.addListener (alarm) =>
+      switch alarm.name
+        when 'omega.updateProfile'
+          console.log('update profile interval')
+          @ready.then( =>
+            @updateProfile()
+          )
     chrome.contextMenus.onClicked.addListener((info, tab) =>
       @ready.then( =>
         switch info.menuItemId
@@ -224,18 +234,11 @@ class ChromeOptions extends OmegaTarget.Options
         port.onDisconnect.addListener =>
           delete @_tabRequestInfoPorts[tabId] if tabId?
 
-  _alarms: null
-  schedule: (name, periodInMinutes, callback) ->
+  schedule: (name, periodInMinutes) ->
     name = 'omega.' + name
-    if not _alarms?
-      @_alarms = {}
-      chrome.alarms.onAlarm.addListener (alarm) =>
-        @_alarms[alarm.name]?()
     if periodInMinutes < 0
-      delete @_alarms[name]
       chrome.alarms.clear(name)
     else
-      @_alarms[name] = callback
       chrome.alarms.create(name, {
         periodInMinutes: periodInMinutes
       })
